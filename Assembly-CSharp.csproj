@@ -63,6 +63,7 @@
     <Compile Include="Assets\MidniteOilSoftware\Scripts\IDespawnedPoolObject.cs" />
     <Compile Include="Assets\MidniteOilSoftware\Scripts\Managers\ObjectPoolManager.cs" />
     <Compile Include="Assets\Game\Scripts\Map\MapController.cs" />
+    <Compile Include="Assets\Game\Scripts\UIController.cs" />
     <Compile Include="Assets\Game\Scripts\NPC\NPCController.cs" />
     <Compile Include="Assets\Game\Scripts\Element.cs" />
     <Compile Include="Assets\MidniteOilSoftware\Demo Scene\Scripts\DespawnAfterDelay.cs" />
