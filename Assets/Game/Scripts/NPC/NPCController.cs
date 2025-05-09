@@ -15,7 +15,6 @@ public class NPCController : MonoBehaviour
     }
     private void Start()
     {
-        // mapController.GenerateRandomGrid();
         List<Vector2Int> path = Pathfiding.FindPath(mapController);
         if (path != null)
         {
@@ -27,7 +26,7 @@ public class NPCController : MonoBehaviour
         foreach (var pos in path)
         {
             Vector3 worldPos = new Vector3(pos.x, pos.y, 0);
-            Tween moveTween = transform.DOMove(worldPos, timeNPCMove).SetEase(Ease.Linear);
+            Tween moveTween = transform.DOMove(worldPos, timeNPCMove).SetEase(Ease.InOutSine);
             yield return moveTween.WaitForCompletion();
         }
     }

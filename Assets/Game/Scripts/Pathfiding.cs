@@ -53,7 +53,7 @@ public class Pathfiding
                 }
             }
         }
-        return null; // không tìm thấy đường
+        return null;
     }
 
     static List<Vector2Int> RetracePath(Element startElement, Element endElement)
