@@ -32,7 +32,6 @@ public class Pathfiding
             {
                 return RetracePath(startElement, goalElement);
             }
-
             openList.Remove(current);
             closedList.Add(current);
 
@@ -53,6 +52,7 @@ public class Pathfiding
                 }
             }
         }
+        //Debug.LogError("============================== null??");
         return null;
     }
 

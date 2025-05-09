@@ -6,22 +6,22 @@ using MidniteOilSoftware;
 
 public class NPCController : MonoBehaviour
 {
-    [SerializeField] private MapController mapController;
     [SerializeField] private float timeNPCMove = 0.2f;
     [SerializeField] private GameObject pathGO;
-    public MapController GetMapController
+    MapController mapController;
+    public void StartFollowPath(MapController _mapController)
     {
-        get => mapController;
-        set => mapController = value;
-    }
-    private void Start()
-    {
+        mapController = _mapController;
         pathElement = ObjectPoolManager.SpawnGameObject(pathGO, transform.position, Quaternion.identity);
         mapController.ChangLstObjectSpawned(true, pathElement);
         List<Vector2Int> path = Pathfiding.FindPath(mapController);
         if (path != null)
         {
             StartCoroutine(FollowPath(path));
+        }
+        else
+        {
+            mapController.AfterGetNullPath();
         }
     }
     GameObject pathElement;

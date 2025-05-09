@@ -7,13 +7,13 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     [SerializeField] private Button startBtn, nextMapBtn;
-    [SerializeField] private GameObject nextBtnLayout;
+    [SerializeField] private GameObject unAvailLayout;
     [SerializeField] private MapController mapController;
 
     private void Start()
     {
         mapController.GetDoneTravelAc += ActiveNextMapLayout;
-        nextBtnLayout.gameObject.SetActive(false);
+        mapController.GetNullPathAc += ActiveUnAvailPathLayout;
         startBtn.onClick.AddListener(StartGameButtonClick);
         nextMapBtn.onClick.AddListener(NextGameButtonClick);
     }
@@ -24,12 +24,24 @@ public class UIController : MonoBehaviour
     }
     public void NextGameButtonClick()
     {
-        nextBtnLayout.gameObject.SetActive(false);
+        nextMapBtn.interactable = false;
         mapController.ChangLstObjectSpawned(false);
         mapController.IntitMapAndNpc();
     }
     void ActiveNextMapLayout()
     {
-        nextBtnLayout.gameObject.SetActive(true);
+        nextMapBtn.interactable = true; 
+    }
+    void ActiveUnAvailPathLayout()
+    {
+        unAvailLayout.gameObject.SetActive(true);
+        StartCoroutine(DeactiveUnAvailPathLayout());
+    }
+    IEnumerator DeactiveUnAvailPathLayout()
+    {
+        yield return new WaitForSeconds(1f);
+        unAvailLayout.gameObject.SetActive(false);
+        mapController.ChangLstObjectSpawned(false);
+        mapController.IntitMapAndNpc();
     }
 }

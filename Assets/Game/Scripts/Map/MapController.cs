@@ -1,5 +1,6 @@
 using MidniteOilSoftware;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,15 +9,20 @@ public class MapController : MonoBehaviour
     [SerializeField] private int maxGrid;
     [SerializeField] private GameObject floorPrefab, wallPrefab, goalPrefab;
     [SerializeField] private GameObject npcPrefab;
+    [SerializeField] private List<GameObject> obSpawned = new List<GameObject>();
 
-    Action doneTravelAC;
+    Action doneTravelAC, afterNullPathAC;
     private int[,] grid;
     int width, height;
     Vector2Int start, goal;
     Camera cam;
-    List<GameObject> obSpawned = new List<GameObject>();
     
     //public List<GameObject> GetLstObSpawned() { return obSpawned; }
+    public Action GetNullPathAc
+    {
+        get => afterNullPathAC;
+        set => afterNullPathAC = value;
+    }
     public Action GetDoneTravelAc
     { 
         get => doneTravelAC; 
@@ -49,6 +55,7 @@ public class MapController : MonoBehaviour
         {
             if(obSpawned.Count > 0)
             {
+                //Debug.LogError("========================= clear list ob: " + obSpawned.Count);
                 for (int i = 0; i < obSpawned.Count; i++)
                 {
                     ObjectPoolManager.DespawnGameObject(obSpawned[i]);
@@ -107,7 +114,7 @@ public class MapController : MonoBehaviour
         }
 
         GameObject npc = ObjectPoolManager.SpawnGameObject(npcPrefab, new Vector3(start.x, start.y, 0), Quaternion.identity);
-        npc.GetComponent<NPCController>().GetMapController = this;
+        npc.GetComponent<NPCController>().StartFollowPath(this);
         ChangLstObjectSpawned(true, npc);
     }
 
@@ -120,8 +127,23 @@ public class MapController : MonoBehaviour
         Vector3 goalPos = new Vector3(goal.x, goal.y, 0);
         if (Vector3.Distance(npc.transform.position, goalPos) < 0.05f)
         {
-            doneTravelAC?.Invoke();
+            StartCoroutine(DelayAfterGetFinish());
         }
     }
+    IEnumerator DelayAfterGetFinish()
+    {
+        yield return new WaitForSeconds(0.5f);
+        doneTravelAC?.Invoke();
 
+    }
+    public void AfterGetNullPath()
+    {
+        StartCoroutine(DelayAfterNullPath());
+    }
+    IEnumerator DelayAfterNullPath()
+    {
+        yield return new WaitForSeconds(2f);
+        afterNullPathAC?.Invoke();
+    }
+        
 }
