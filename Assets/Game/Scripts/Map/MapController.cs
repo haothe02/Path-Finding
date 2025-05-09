@@ -51,7 +51,7 @@ public class MapController : MonoBehaviour
             }
         }
 
-        start = new Vector2Int(0, 0);
+        start = Vector2Int.zero;
         goal = new Vector2Int(width - 1, height - 1);
         grid[start.x, start.y] = 2;
         grid[goal.x, goal.y] = 3;
